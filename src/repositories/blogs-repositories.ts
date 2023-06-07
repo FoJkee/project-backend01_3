@@ -1,8 +1,6 @@
 import {blogsType} from "../types/types";
 
-const db: {blogs: blogsType[]} = {
-    blogs: []
-}
+
 
 export let blogs: blogsType[] = []
 const date = new Date()

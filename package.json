@@ -1,8 +1,8 @@
 {
-  "name": "project_backend01_1",
+  "name": "project_backend01_3",
   "version": "1.0.0",
   "main": "src/index.js",
-  "repository": "https://github.com/FoJkee/project_backend01_1.git",
+  "repository": "https://github.com/FoJkee/project_backend01_3.git",
   "author": "FoJkee <romanovsky0815@gmail.com>",
   "license": "MIT",
   "dependencies": {
