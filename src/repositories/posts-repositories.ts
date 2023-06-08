@@ -5,11 +5,11 @@ export let posts: postsType[] = []
 const date = new Date()
 export const repositoryPosts = {
 
-    findPosts() {
+    async findPosts() {
         return posts
     },
 
-    createPosts(title: string, shortDescription: string,
+    async createPosts(title: string, shortDescription: string,
                 content: string, blogId: string, blogName: string) {
 
         const postsPost = {
@@ -26,12 +26,12 @@ export const repositoryPosts = {
 
     },
 
-    findPostsId(id: string) {
+    async findPostsId(id: string) {
             let findGetId = posts.find(el => el.id === id)
             return findGetId
     },
 
-    updatePosts (id: string, title: string, shortDescription: string,
+   async updatePosts (id: string, title: string, shortDescription: string,
                  content: string, blogId: string){
         const postsPut = posts.find(el => el.id === id)
         if (postsPut) {
@@ -45,14 +45,14 @@ export const repositoryPosts = {
         }
     },
 
-    deletePosts(id: string) {
+    async deletePosts(id: string) {
         const post = posts.find(p => p.id === id)
         if (!post) return null
         posts = posts.filter(p => p.id !== id)
         return true
 
     },
-    deletePostsAll(){
+    async deletePostsAll(){
         posts.splice(0)
     }
 

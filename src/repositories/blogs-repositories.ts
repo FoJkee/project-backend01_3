@@ -1,17 +1,16 @@
 import {blogsType} from "../types/types";
 
 
-
 export let blogs: blogsType[] = []
 const date = new Date()
 
 export const repositoryBlogs = {
 
-    findBlogs() {
+    async findBlogs() {
         return blogs
     },
 
-    createBlogs(name: string, description: string, websiteUrl: string) {
+    async createBlogs(name: string, description: string, websiteUrl: string): Promise<blogsType> {
 
         const blogsPost = {
             id: (+date).toString(),
@@ -23,12 +22,12 @@ export const repositoryBlogs = {
         return blogsPost
     },
 
-    findBlogsId(id: string) {
+    async findBlogsId(id: string) {
         let blogsGet = blogs.find(el => el.id === id)
         return blogsGet
     },
 
-    updateBlogs(id: string, name: string, description: string, websiteUrl: string) {
+    async updateBlogs(id: string, name: string, description: string, websiteUrl: string): Promise<boolean> {
         const blogsPut = blogs.find(el => el.id === id)
         if (blogsPut) {
             blogsPut.name = name
@@ -39,14 +38,14 @@ export const repositoryBlogs = {
             return false
         }
     },
-    deleteBlogs(id: string) {
+    async deleteBlogs(id: string) {
         const blog = this.findBlogsId(id)
-        if(!blog) return null
+        if (!blog) return null
         blogs = blogs.filter(b => b.id !== id)
         return true
 
     },
-    deleteBlogsAll(){
+    async deleteBlogsAll() {
         blogs.splice(0)
     }
 

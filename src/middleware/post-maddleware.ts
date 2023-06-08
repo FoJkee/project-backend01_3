@@ -1,5 +1,5 @@
 import {body} from "express-validator";
-import {blogs} from "../repositories/blogs-repositories";
+import {blogs, repositoryBlogs} from "../repositories/blogs-repositories";
 
 
 export const postMaddleware = [
@@ -23,6 +23,7 @@ export const postMaddleware = [
             const blog = blogs.find(b => b.id === v)
             if (!blog) throw new Error()
             req.body.blogName = blog.name
+            req.body.blogId = blog.id
             return true
-        }),
+        })
 ]

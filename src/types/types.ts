@@ -5,10 +5,9 @@ export type blogsType = {
     websiteUrl: string
 }
 
-export type Error = {
-    message: string,
-    field: string,
-}
+
+
+
 export type postsType = {
     id: string,
     title: string,
