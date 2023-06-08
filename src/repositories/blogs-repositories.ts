@@ -10,7 +10,7 @@ export const repositoryBlogs = {
         return blogs
     },
 
-    async createBlogs(name: string, description: string, websiteUrl: string): Promise<blogsType> {
+    async createBlogs(name: string, description: string, websiteUrl: string, isMembership: boolean): Promise<blogsType> {
 
         const blogsPost = {
             id: (+date).toString(),
@@ -18,7 +18,7 @@ export const repositoryBlogs = {
             description: description,
             websiteUrl: websiteUrl,
             createdAt: date.toISOString(),
-            isMembership: true
+            isMembership: isMembership
         }
         blogs.push(blogsPost)
         return blogsPost
@@ -52,6 +52,7 @@ export const repositoryBlogs = {
 
     },
     async deleteBlogsAll() {
+
         blogs.splice(0)
     }
 

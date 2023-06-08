@@ -13,11 +13,11 @@ routingBlogs.get('/', async (req: Request, res: Response) => {
     res.status(200).send(blogsGet)
 })
 
-routingBlogs.post('/', blogsMiddleware, errorsMessages,
+routingBlogs.post('/', authorizeMiddleware, blogsMiddleware, errorsMessages,
     async (req: Request, res: Response) => {
 
         const newBlogs = await repositoryBlogs.createBlogs(req.body.name, req.body.description,
-            req.body.websiteUrl)
+            req.body.websiteUrl, req.body.isMembership)
         res.status(201).json(newBlogs)
 
     })
@@ -51,6 +51,8 @@ routingBlogs.delete('/:id', authorizeMiddleware, blogsMiddleware, async (req: Re
         res.sendStatus(404)
         return
     }
-    res.sendStatus(204)
+    res.send(
+        "Are you sure you want to deletethis blog ?")
+        .sendStatus(204)
 
 })
