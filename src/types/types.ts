@@ -2,10 +2,10 @@ export type blogsType = {
     id: string,
     name: string,
     description: string,
-    websiteUrl: string
+    websiteUrl: string,
+    createdAt: string,
+    isMembership: boolean
 }
-
-
 
 
 export type postsType = {
@@ -14,6 +14,7 @@ export type postsType = {
     shortDescription: string,
     content: string,
     blogId: string,
-    blogName: string
+    blogName: string,
+    createdAt: string,
 }
 

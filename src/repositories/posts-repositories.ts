@@ -5,7 +5,7 @@ export let posts: postsType[] = []
 const date = new Date()
 export const repositoryPosts = {
 
-    async findPosts() {
+    async findPosts(): Promise<postsType[]> {
         return posts
     },
 
@@ -18,7 +18,8 @@ export const repositoryPosts = {
             shortDescription: shortDescription,
             content: content,
             blogId: blogId,
-            blogName: blogName
+            blogName: blogName,
+            createdAt: date.toISOString()
         }
 
         posts.push(postsPost)
@@ -46,7 +47,7 @@ export const repositoryPosts = {
     },
 
     async deletePosts(id: string) {
-        const post = posts.find(p => p.id === id)
+        const post = this.findPostsId(id)
         if (!post) return null
         posts = posts.filter(p => p.id !== id)
         return true

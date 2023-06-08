@@ -23,8 +23,8 @@ app.use('/posts', routingPosts)
 app.use('/testing', testingRouter)
 
 
-app.get('/', (req:Request, res:Response) => {
-    res.send('Hello World!!!')
+app.get('/', async (req: Request, res: Response) => {
+    await res.send('Hello World!!!')
 })
 
 app.listen(port, () => {

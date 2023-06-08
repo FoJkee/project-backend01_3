@@ -15,8 +15,6 @@ routingPosts.get('/', async (req: Request, res: Response) => {
 })
 routingPosts.post('/', authorizeMiddleware, postMaddleware, errorsMessages, async (req: Request, res: Response) => {
 
-    console.log(req.body.blogName)
-    console.log(req.body.blogId)
     const newPosts = await repositoryPosts.createPosts(req.body.title,
         req.body.shortDescription, req.body.content, req.body.blogId, req.body.blogName)
     res.status(201).json(newPosts)
@@ -36,7 +34,7 @@ routingPosts.put('/:id', authorizeMiddleware, postMaddleware, errorsMessages, as
     const putBlogs = await repositoryPosts.updatePosts(req.params.id, req.body.title,
         req.body.shortDescription, req.body.content, req.body.blogId)
     if (putBlogs) {
-        const putBlogsId = repositoryPosts.findPostsId(req.params.id)
+        const putBlogsId = await repositoryPosts.findPostsId(req.params.id)
         res.status(204).send(putBlogsId)
     } else {
         res.sendStatus(404)

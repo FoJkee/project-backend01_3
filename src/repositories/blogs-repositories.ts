@@ -6,7 +6,7 @@ const date = new Date()
 
 export const repositoryBlogs = {
 
-    async findBlogs() {
+    async findBlogs(): Promise<blogsType[]> {
         return blogs
     },
 
@@ -16,15 +16,21 @@ export const repositoryBlogs = {
             id: (+date).toString(),
             name: name,
             description: description,
-            websiteUrl: websiteUrl
+            websiteUrl: websiteUrl,
+            createdAt: date.toISOString(),
+            isMembership: true
         }
         blogs.push(blogsPost)
         return blogsPost
     },
 
-    async findBlogsId(id: string) {
+    async findBlogsId(id: string): Promise<blogsType | null> {
         let blogsGet = blogs.find(el => el.id === id)
-        return blogsGet
+        if(blogsGet) {
+            return blogsGet
+        } else {
+            return null
+        }
     },
 
     async updateBlogs(id: string, name: string, description: string, websiteUrl: string): Promise<boolean> {
@@ -38,7 +44,7 @@ export const repositoryBlogs = {
             return false
         }
     },
-    async deleteBlogs(id: string) {
+    async deleteBlogs(id: string): Promise<blogsType | boolean | null> {
         const blog = this.findBlogsId(id)
         if (!blog) return null
         blogs = blogs.filter(b => b.id !== id)

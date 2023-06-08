@@ -3,7 +3,6 @@ import {repositoryBlogs} from "../repositories/blogs-repositories";
 import {authorizeMiddleware} from "../middleware/authorize";
 import {errorsMessages} from "../middleware/errorsmessages";
 import {blogsMiddleware} from "../middleware/blogs-middleware";
-import {blogsType} from "../types/types";
 
 
 export const routingBlogs = Router()
@@ -17,7 +16,7 @@ routingBlogs.get('/', async (req: Request, res: Response) => {
 routingBlogs.post('/', blogsMiddleware, errorsMessages,
     async (req: Request, res: Response) => {
 
-        const newBlogs  = await repositoryBlogs.createBlogs(req.body.name, req.body.description,
+        const newBlogs = await repositoryBlogs.createBlogs(req.body.name, req.body.description,
             req.body.websiteUrl)
         res.status(201).json(newBlogs)
 
@@ -25,7 +24,11 @@ routingBlogs.post('/', blogsMiddleware, errorsMessages,
 routingBlogs.get('/:id', async (req: Request, res: Response) => {
 
     const blogsGetId = await repositoryBlogs.findBlogsId(req.params.id)
-    blogsGetId ? res.status(200).json(blogsGetId) : res.sendStatus(404)
+    if (blogsGetId) {
+        res.status(200).json(blogsGetId)
+    } else {
+        res.sendStatus(404)
+    }
 
 })
 routingBlogs.put('/:id', authorizeMiddleware, blogsMiddleware, errorsMessages,
@@ -33,7 +36,7 @@ routingBlogs.put('/:id', authorizeMiddleware, blogsMiddleware, errorsMessages,
         const blogsPut = await repositoryBlogs.updateBlogs(req.params.id, req.body.name,
             req.body.description, req.body.websiteUrl)
         if (blogsPut) {
-            const blogsPutId = repositoryBlogs.findBlogsId(req.params.id)
+            const blogsPutId = await repositoryBlogs.findBlogsId(req.params.id)
             res.status(204).send(blogsPutId)
         } else {
             res.sendStatus(404)
@@ -48,8 +51,6 @@ routingBlogs.delete('/:id', authorizeMiddleware, blogsMiddleware, async (req: Re
         res.sendStatus(404)
         return
     }
-
     res.sendStatus(204)
-
 
 })

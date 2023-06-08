@@ -19,11 +19,10 @@ export const postMaddleware = [
     body('blogId').exists().isString().isLength({min: 1, max: 100})
         .withMessage('Incorrect blogId')
         .custom((v, {req}) => {
-            console.log(req.body)
             const blog = blogs.find(b => b.id === v)
             if (!blog) throw new Error()
             req.body.blogName = blog.name
-            req.body.blogId = blog.id
             return true
         })
+
 ]
