@@ -51,8 +51,7 @@ routingBlogs.delete('/:id', authorizeMiddleware, blogsMiddleware, async (req: Re
         res.sendStatus(404)
         return
     }
-    res.send(
-        "Are you sure you want to deletethis blog ?")
+    res.send({message: "Are you sure you want to delete this blog ?"} )
         .sendStatus(204)
 
 })

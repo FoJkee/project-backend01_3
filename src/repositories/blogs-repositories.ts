@@ -18,7 +18,7 @@ export const repositoryBlogs = {
             description: description,
             websiteUrl: websiteUrl,
             createdAt: date.toISOString(),
-            isMembership: isMembership
+            isMembership: false
         }
         blogs.push(blogsPost)
         return blogsPost
@@ -52,7 +52,7 @@ export const repositoryBlogs = {
 
     },
     async deleteBlogsAll() {
-
+        console.log("Are you sure you want to deletethis blog ?")
         blogs.splice(0)
     }
 

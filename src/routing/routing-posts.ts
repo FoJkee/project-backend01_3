@@ -44,10 +44,10 @@ routingPosts.put('/:id', authorizeMiddleware, postMaddleware, errorsMessages, as
 routingPosts.delete('/:id', authorizeMiddleware, postMaddleware, async (req: Request, res: Response) => {
 
     const postDelete = await repositoryPosts.deletePosts(req.params.id)
-    if (postDelete) {
-        res.sendStatus(204)
-    } else {
+    if (!postDelete) {
         res.sendStatus(404)
+    } else {
+        res.send("Are you sure you want to delete this post ?").status(204)
     }
 
 })
