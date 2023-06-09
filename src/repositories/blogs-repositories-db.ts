@@ -1,4 +1,5 @@
 import {blogsType} from "../types/types";
+import {client} from "../db/db";
 
 
 export let blogs: blogsType[] = []
@@ -7,7 +8,7 @@ const date = new Date()
 export const repositoryBlogs = {
 
     async findBlogs(): Promise<blogsType[]> {
-
+        client.db('social_network').collection('blogs')
         return blogs
     },
 
@@ -27,7 +28,7 @@ export const repositoryBlogs = {
 
     async findBlogsId(id: string): Promise<blogsType | null> {
         let blogsGet = blogs.find(el => el.id === id)
-        if(blogsGet) {
+        if (blogsGet) {
             return blogsGet
         } else {
             return null

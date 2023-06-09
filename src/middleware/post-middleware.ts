@@ -1,8 +1,8 @@
 import {body} from "express-validator";
-import {blogs, repositoryBlogs} from "../repositories/blogs-repositories";
+import {blogs} from "../repositories/blogs-repositories";
 
 
-export const postMaddleware = [
+export const postMiddleware = [
 
     body('title').exists().isString().trim().isLength({
         min: 1,

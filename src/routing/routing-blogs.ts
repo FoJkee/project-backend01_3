@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {authorizeMiddleware} from "../middleware/authorize";
 import {errorsMessages} from "../middleware/errorsmessages";
 import {blogsMiddleware} from "../middleware/blogs-middleware";
-import {repositoryBlogs} from "../repositories/blogs-repositories-db";
+import {repositoryBlogs} from "../repositories/blogs-repositories";
 
 
 export const routingBlogs = Router()

@@ -1,5 +1,7 @@
 import {MongoClient} from "mongodb";
 
+import dotenv from 'dotenv'
+dotenv.config()
 
 const mongoUri = process.env.mongo_URI || "mongodb://127.0.0.1:27017"
 
