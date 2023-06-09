@@ -1,12 +1,15 @@
 import {postsType} from "../types/types";
+import {client} from "../db/db";
 
 
-export let posts: postsType[] = []
+export let __posts: postsType[] = []
 const date = new Date()
 export const repositoryPosts = {
 
     async findPosts(): Promise<postsType[]> {
-        return posts
+        client.db('')
+
+        return __posts
     },
 
     async createPosts(title: string, shortDescription: string,
@@ -22,23 +25,19 @@ export const repositoryPosts = {
             createdAt: date.toISOString()
         }
 
-        posts.push(postsPost)
+        __posts.push(postsPost)
         return postsPost
 
     },
 
-    async findPostsId(id: string): Promise<postsType | null> {
-        let findGetId = posts.find(el => el.id === id)
-        if (findGetId) {
-            return findGetId
-        } else {
-            return null
-        }
+    async findPostsId(id: string): Promise<postsType | undefined> {
+        let findGetId = __posts.find(el => el.id === id)
+        return findGetId
     },
 
     async updatePosts(id: string, title: string, shortDescription: string,
                       content: string, blogId: string): Promise<boolean> {
-        const postsPut = posts.find(el => el.id === id)
+        const postsPut = __posts.find(el => el.id === id)
         if (postsPut) {
             postsPut.title = title
             postsPut.shortDescription = shortDescription
@@ -53,12 +52,12 @@ export const repositoryPosts = {
     async deletePosts(id: string): Promise<boolean | null> {
         const post = this.findPostsId(id)
         if (!post) return null
-        posts = posts.filter(p => p.id !== id)
+        __posts = __posts.filter(p => p.id !== id)
         return true
 
     },
     async deletePostsAll() {
-        posts.splice(0)
+        __posts.splice(0)
     }
 
 }

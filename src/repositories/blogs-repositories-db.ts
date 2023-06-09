@@ -7,6 +7,7 @@ const date = new Date()
 export const repositoryBlogs = {
 
     async findBlogs(): Promise<blogsType[]> {
+
         return blogs
     },
 

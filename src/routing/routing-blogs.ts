@@ -1,8 +1,8 @@
 import {Request, Response, Router} from "express";
-import {repositoryBlogs} from "../repositories/blogs-repositories";
 import {authorizeMiddleware} from "../middleware/authorize";
 import {errorsMessages} from "../middleware/errorsmessages";
 import {blogsMiddleware} from "../middleware/blogs-middleware";
+import {repositoryBlogs} from "../repositories/blogs-repositories-db";
 
 
 export const routingBlogs = Router()
@@ -18,8 +18,7 @@ routingBlogs.post('/', authorizeMiddleware, blogsMiddleware, errorsMessages,
 
         const newBlogs = await repositoryBlogs.createBlogs(req.body.name, req.body.description,
             req.body.websiteUrl, req.body.isMembership)
-        res.status(201).json(newBlogs)
-
+            res.status(201).json(newBlogs)
     })
 routingBlogs.get('/:id', async (req: Request, res: Response) => {
 
@@ -49,9 +48,7 @@ routingBlogs.delete('/:id', authorizeMiddleware, blogsMiddleware, async (req: Re
 
     if (!deleteBlogs) {
         res.sendStatus(404)
-        return
+    } else {
+        res.sendStatus(204)
     }
-    res.send({message: "Are you sure you want to delete this blog ?"} )
-        .sendStatus(204)
-
 })
