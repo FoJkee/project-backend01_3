@@ -1,8 +1,9 @@
 import {Request, Response, Router} from "express";
-import {repositoryPosts} from "../repositories/posts-repositories-db";
 import {postMiddleware} from "../middleware/post-middleware";
 import {errorsMessages} from "../middleware/errorsmessages";
 import {authorizeMiddleware} from "../middleware/authorize";
+import {repositoryPosts} from "../repositories/posts-repositories-db";
+
 
 export const routingPosts = Router()
 
@@ -20,6 +21,10 @@ routingPosts.post('/', authorizeMiddleware, postMiddleware, errorsMessages, asyn
     res.status(201).send(newPosts)
 
 })
+
+
+
+
 routingPosts.get('/:id', async (req: Request, res: Response) => {
 
     const postsGetId = await repositoryPosts.findPostsId(req.params.id)

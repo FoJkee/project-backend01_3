@@ -1,5 +1,5 @@
 import {body} from "express-validator";
-import {blogs} from "../repositories/blogs-repositories";
+import {repositoryBlogs} from "../repositories/blogs-repositories-db";
 
 
 export const postMiddleware = [
@@ -18,11 +18,11 @@ export const postMiddleware = [
     }).withMessage('String length is not more than 1000 symbols'),
     body('blogId').exists().isString().isLength({min: 1, max: 100})
         .withMessage('Incorrect blogId')
-        .custom((v, {req}) => {
+        .custom(async (v, {req}) => {
+            const blogs = await repositoryBlogs.findBlogs()
             const blog = blogs.find(b => b.id === v)
             if (!blog) throw new Error()
             req.body.blogName = blog.name
             return true
         })
-
 ]

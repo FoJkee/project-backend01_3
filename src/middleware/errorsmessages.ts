@@ -5,7 +5,7 @@ import {validationResult} from "express-validator";
 
 export const errorsMessages = (req: Request, res: Response, next: NextFunction) => {
 
-    const errMes = ({type, location, path, value, msg}: any) => {
+    const errMes =  ({type, location, path, value, msg}: any) => {
         return {
             message: msg,
             field: path

@@ -1,36 +1,35 @@
 import {postsType} from "../types/types";
-import {client} from "./db";
+import {postsCollection} from "./db";
 
 
-export let __posts: postsType[] = []
+
 const date = new Date()
 export const repositoryPosts = {
 
     async findPosts(): Promise<postsType[]> {
-        return client.db('social_network').collection<postsType>('posts').find({}).toArray()
+        return await postsCollection.find({}).toArray()
     },
 
     async createPosts(title: string, shortDescription: string,
-                      content: string, blogId: string, blogName: string): Promise<postsType> {
+                      content: string, blogId: string, blogName: string):Promise<postsType> {
 
         const postsPost = {
             id: (+date).toString(),
             title: title,
             shortDescription: shortDescription,
-            content: content,
-            blogId: blogId,
+            content:content,
+            blogId:blogId,
             blogName: blogName,
             createdAt: date.toISOString()
         }
-        const result = await client.db('social_network').collection<postsType>('posts').insertOne(postsPost)
+        await postsCollection.insertOne(postsPost)
         return postsPost
 
     },
 
     async findPostsId(id: string): Promise<postsType | null> {
 
-        let findGetId: postsType | null = await client.db('social_network')
-            .collection<postsType>('posts').findOne({id: id})
+        let findGetId: postsType | null = await postsCollection.findOne({id: id})
         if (findGetId) {
             return findGetId
         } else {
@@ -41,8 +40,7 @@ export const repositoryPosts = {
     async updatePosts(id: string, title: string, shortDescription: string,
                       content: string, blogId: string): Promise<boolean> {
 
-        const result = await client.db('social_network')
-            .collection<postsType>('posts')
+        const result = await postsCollection
             .updateOne({id: id}, {
                 title: title, shortDescription: shortDescription,
                 content: content,
@@ -52,14 +50,12 @@ export const repositoryPosts = {
     },
 
     async deletePosts(id: string): Promise<boolean | null> {
-        const result = await client.db('social_network')
-            .collection<postsType>('posts').deleteOne({id: id})
+        const result = await postsCollection.deleteOne({id: id})
         return result.deletedCount === 1
     },
 
     async deletePostsAll() {
-        const result = await client.db('social_network')
-            .collection<postsType>('posts').deleteMany({})
+        const result = await postsCollection.deleteMany({})
         return result.deletedCount === 1
     }
 }
