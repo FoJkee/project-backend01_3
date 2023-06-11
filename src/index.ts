@@ -3,17 +3,17 @@ import {testingRouter} from "./routing/routing-testing";
 import {routingPosts} from "./routing/routing-posts";
 import {routingBlogs} from "./routing/routing-blogs";
 import bodyParser from "body-parser";
-import {runDb} from "./db/db";
+import {runDb} from "./repositories/db";
 
 
 const app = express()
-app.use(bodyParser())
+
 
 const port = process.env.PORT || 4000
 
 
 const parserMiddleware = express.json()
-
+app.use(bodyParser())
 app.use(parserMiddleware)
 
 app.use('/blogs', routingBlogs)

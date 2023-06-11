@@ -1,19 +1,18 @@
 import {blogsType} from "../types/types";
-import {client} from "../db/db";
+import {client} from "./db";
 
 
-export let blogs: blogsType[] = []
+let __blogs:blogsType[] = []
 const date = new Date()
 
+const blogsRepositoryDb = client.db('social_network').collection<blogsType>('blogs')
 export const repositoryBlogs = {
 
     async findBlogs(): Promise<blogsType[]> {
-        client.db('social_network').collection('blogs')
-        return blogs
+       return blogsRepositoryDb.find({}).toArray()
     },
 
-    async createBlogs(name: string, description: string, websiteUrl: string, isMembership: boolean): Promise<blogsType> {
-
+    async createBlogs(name: string, description: string, websiteUrl: string): Promise<blogsType> {
         const blogsPost = {
             id: (+date).toString(),
             name: name,
@@ -22,12 +21,12 @@ export const repositoryBlogs = {
             createdAt: date.toISOString(),
             isMembership: false
         }
-        blogs.push(blogsPost)
+        const result = await blogsRepositoryDb.insertOne(blogsPost)
         return blogsPost
     },
 
     async findBlogsId(id: string): Promise<blogsType | null> {
-        let blogsGet = blogs.find(el => el.id === id)
+        let blogsGet: blogsType | null = await blogsRepositoryDb.findOne({id: id})
         if (blogsGet) {
             return blogsGet
         } else {
@@ -36,25 +35,20 @@ export const repositoryBlogs = {
     },
 
     async updateBlogs(id: string, name: string, description: string, websiteUrl: string): Promise<boolean> {
-        const blogsPut = blogs.find(el => el.id === id)
-        if (blogsPut) {
-            blogsPut.name = name
-            blogsPut.description = description
-            blogsPut.websiteUrl = websiteUrl
-            return true
-        } else {
-            return false
-        }
-    },
-    async deleteBlogs(id: string): Promise<blogsType | boolean | null> {
-        const blog = this.findBlogsId(id)
-        if (!blog) return null
-        blogs = blogs.filter(b => b.id !== id)
-        return true
+       const result = await blogsRepositoryDb
+            .updateOne({id:id}, {$set: {name: name, description: description, websiteUrl: websiteUrl}})
+
+       return  result.matchedCount === 1
 
     },
+    async deleteBlogs(id: string): Promise<blogsType | boolean | null> {
+       const result = await blogsRepositoryDb.deleteOne({id:id})
+       return result.deletedCount  === 1
+    },
+
     async deleteBlogsAll() {
-        blogs.splice(0)
+        const result = await blogsRepositoryDb.deleteMany({})
+        return result.deletedCount  === 1
     }
 
 }

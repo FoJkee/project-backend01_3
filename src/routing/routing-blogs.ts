@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {authorizeMiddleware} from "../middleware/authorize";
 import {errorsMessages} from "../middleware/errorsmessages";
 import {blogsMiddleware} from "../middleware/blogs-middleware";
-import {repositoryBlogs} from "../repositories/blogs-repositories";
+import {repositoryBlogs} from "../repositories/blogs-repositories-db";
 
 
 export const routingBlogs = Router()
@@ -17,7 +17,7 @@ routingBlogs.post('/', authorizeMiddleware, blogsMiddleware, errorsMessages,
     async (req: Request, res: Response) => {
 
         const newBlogs = await repositoryBlogs.createBlogs(req.body.name, req.body.description,
-            req.body.websiteUrl, req.body.isMembership)
+            req.body.websiteUrl)
             res.status(201).json(newBlogs)
     })
 routingBlogs.get('/:id', async (req: Request, res: Response) => {

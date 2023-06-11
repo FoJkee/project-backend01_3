@@ -1,15 +1,24 @@
 import {MongoClient} from "mongodb";
-
-import dotenv from 'dotenv'
+import {blogsType} from "../types/types";
+import * as dotenv from 'dotenv'
 dotenv.config()
 
-const mongoUri = process.env.mongo_URI || "mongodb://127.0.0.1:27017"
+
+
+const mongoUri = process.env.MONGO_URL
+if(!mongoUri){
+    throw new Error('Not')
+}
+console.log('url:', mongoUri)
 
 export const client = new MongoClient(mongoUri)
+
+const blogsDb = client.db().collection<blogsType>('blogs')
+const postsDb = client.db().collection<blogsType>('posts')
+
 export async function runDb() {
     try{
         await client.connect()
-        await client.db('blogs').command({ping: 1})
         console.log('Connected successfully to mongo server')
         
     }
@@ -19,5 +28,3 @@ export async function runDb() {
         await client.close()
     }
 }
-
-console.log(process.env.mongo_URI)
