@@ -56,5 +56,5 @@ routingPosts.delete('/:id', authorizeMiddleware, postMiddleware, async (req: Req
     }
 
     const postDelete = await repositoryPosts.deletePosts(req.params.id)
-    res.sendStatus(404)
+    res.sendStatus(204)
 })
