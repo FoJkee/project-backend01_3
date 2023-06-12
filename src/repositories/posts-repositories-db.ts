@@ -58,6 +58,7 @@ export const repositoryPosts = {
         }
     },
 
+
     async updatePosts(id: string, title: string, shortDescription: string,
                       content: string, blogId: string): Promise<boolean> {
 
