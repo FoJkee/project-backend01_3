@@ -1,4 +1,3 @@
-
 import {postsCollection} from "./db";
 import {PostsType} from "../types/types";
 
