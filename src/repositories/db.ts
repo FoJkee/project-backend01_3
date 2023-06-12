@@ -5,13 +5,12 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 
-const mongoUri = process.env.MONGO_URL || "mongodb://127.0.0.1:27017"
+const mongoUri = process.env.MONGO_URL || "mongodb://0.0.0.0:27017"
+
 console.log(mongoUri)
 if (!mongoUri) {
     throw new Error('Not')
 }
-
-
 
 const client = new MongoClient(mongoUri)
 
