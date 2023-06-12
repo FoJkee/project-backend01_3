@@ -1,16 +1,16 @@
-import {blogsType} from "../types/types";
+import {BlogsType} from "../types/types";
 
 
-export let blogs: blogsType[] = []
+export let blogs: BlogsType[] = []
 const date = new Date()
 
 export const repositoryBlogs = {
 
-    async findBlogs(): Promise<blogsType[]> {
+    async findBlogs(): Promise<BlogsType[]> {
         return blogs
     },
 
-    async createBlogs(name: string, description: string, websiteUrl: string, isMembership: boolean): Promise<blogsType> {
+    async createBlogs(name: string, description: string, websiteUrl: string, isMembership: boolean): Promise<BlogsType> {
 
         const blogsPost = {
             id: (+date).toString(),
@@ -24,7 +24,7 @@ export const repositoryBlogs = {
         return blogsPost
     },
 
-    async findBlogsId(id: string): Promise<blogsType | null> {
+    async findBlogsId(id: string): Promise<BlogsType | null> {
         let blogsGet = blogs.find(el => el.id === id)
         if(blogsGet) {
             return blogsGet
@@ -44,7 +44,7 @@ export const repositoryBlogs = {
             return false
         }
     },
-    async deleteBlogs(id: string): Promise<blogsType | boolean | null> {
+    async deleteBlogs(id: string): Promise<BlogsType | boolean | null> {
         const blog = this.findBlogsId(id)
         if (!blog) return null
         blogs = blogs.filter(b => b.id !== id)
