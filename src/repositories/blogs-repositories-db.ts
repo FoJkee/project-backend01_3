@@ -1,6 +1,5 @@
 import {BlogsType} from "../types/types";
 import {blogsCollection} from "./db";
-import {WithId} from "mongodb";
 
 type BlogViewType = BlogsType & { id: string }
 
@@ -18,7 +17,7 @@ export const repositoryBlogs = {
         }))
     },
 
-    async createBlogs(name: string, description: string, websiteUrl: string): Promise<BlogsType> {
+    async createBlogs(name: string, description: string, websiteUrl: string): Promise<string> {
         const blogsPost = {
             name: name,
             description: description,
@@ -27,19 +26,19 @@ export const repositoryBlogs = {
             isMembership: false
         }
         const result = await blogsCollection.insertOne(blogsPost)
-        return blogsPost
+        return result.insertedId.toString()
     },
 
     async findBlogsId(id: string): Promise<BlogViewType | null> {
-        let blogsGet: WithId<BlogsType> | null = await blogsCollection.findOne({id: id})
+        let blogsGet = await blogsCollection.findOne({id: id})
         if (blogsGet) {
             return {
                 id: blogsGet._id.toString(),
                 name: blogsGet.name,
                 description: blogsGet.description,
                 websiteUrl: blogsGet.websiteUrl,
-                createdAt: blogsGet.createdAt,
-                isMembership: blogsGet.isMembership
+                createdAt: date.toISOString(),
+                isMembership: false
             }
         } else {
             return null
