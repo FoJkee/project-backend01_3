@@ -5,6 +5,8 @@ import {WithId} from "mongodb";
 type BlogViewType = BlogsType & { id: string }
 
 const date = new Date()
+
+
 export const repositoryBlogs = {
 
     async findBlogs(): Promise<BlogViewType[]> {
