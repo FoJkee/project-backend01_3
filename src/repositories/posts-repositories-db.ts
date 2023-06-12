@@ -64,11 +64,14 @@ export const repositoryPosts = {
 
         const result = await postsCollection
             .updateOne({_id: new ObjectId(id)}, {
-                "title": title,
-                "shortDescription": shortDescription,
-                "content": content,
-                "blogId": blogId
-            })
+                $set: {
+                    "title": title,
+                    "shortDescription": shortDescription,
+                    "content": content,
+                    "blogId": blogId
+                }
+            }, {upsert: true})
+
         return result.matchedCount === 1
     },
 
