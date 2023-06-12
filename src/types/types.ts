@@ -8,7 +8,6 @@ export type BlogsType = {
 
 
 export type postsType = {
-    id: string,
     title: string,
     shortDescription: string,
     content: string,

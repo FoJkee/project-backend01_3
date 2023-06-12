@@ -1,5 +1,8 @@
-import {postsType} from "../types/types";
+import {BlogsType, postsType} from "../types/types";
 import {postsCollection} from "./db";
+
+
+type PostViewType = postsType & { id: string }
 
 const date = new Date()
 export const repositoryPosts = {
