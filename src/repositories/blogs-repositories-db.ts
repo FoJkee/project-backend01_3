@@ -8,7 +8,7 @@ const date = new Date()
 
 export const repositoryBlogs = {
 
-    async findBlogs(): Promise<BlogsType[]> {
+    async findBlogs(): Promise<BlogViewType[]> {
         const result =  await blogsCollection.find({}).toArray()
         return result.map(el => ({
             name: el.name, id: el._id.toString(),
