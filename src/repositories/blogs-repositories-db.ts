@@ -16,8 +16,9 @@ export const repositoryBlogs = {
         }))
     },
 
-    async createBlogs(name: string, description: string, websiteUrl: string): Promise<BlogsType> {
+    async createBlogs(name: string, description: string, websiteUrl: string): Promise<BlogViewType> {
         const blogsPost = {
+            id: (+date).toString(),
             name: name,
             description: description,
             websiteUrl: websiteUrl,

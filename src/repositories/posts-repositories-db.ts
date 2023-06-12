@@ -17,9 +17,10 @@ export const repositoryPosts = {
     },
 
     async createPosts(title: string, shortDescription: string,
-                      content: string, blogId: string, blogName: string): Promise<PostsType> {
+                      content: string, blogId: string, blogName: string): Promise<PostViewType> {
 
         const postsPost = {
+            id: (+date).toString(),
             title: title,
             shortDescription: shortDescription,
             content: content,
