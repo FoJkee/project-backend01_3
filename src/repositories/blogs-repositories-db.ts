@@ -37,8 +37,8 @@ export const repositoryBlogs = {
                 name: blogsGet.name,
                 description: blogsGet.description,
                 websiteUrl: blogsGet.websiteUrl,
-                createdAt: date.toISOString(),
-                isMembership: false
+                createdAt: blogsGet.createdAt,
+                isMembership: blogsGet.isMembership
             }
         } else {
             return null
