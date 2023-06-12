@@ -5,8 +5,6 @@ type BlogViewType = BlogsType & { id: string }
 
 const date = new Date()
 
-
-
 export const repositoryBlogs = {
 
     async findBlogs(): Promise<BlogViewType[]> {
@@ -18,40 +16,24 @@ export const repositoryBlogs = {
         }))
     },
 
-    async createBlogs(name: string, description: string, websiteUrl: string): Promise<BlogsType | null> {
+    async createBlogs(name: string, description: string, websiteUrl: string): Promise<BlogsType> {
         const blogsPost = {
+            id: (+date).toString(),
             name: name,
             description: description,
             websiteUrl: websiteUrl,
             createdAt: date.toISOString(),
             isMembership: false
         }
-        const result =  await blogsCollection.insertOne(blogsPost)
-        if(blogsPost){
-            return {
-                name: blogsPost.name,
-                description: blogsPost.description,
-                websiteUrl: blogsPost.websiteUrl,
-                createdAt: blogsPost.createdAt,
-                isMembership: blogsPost.isMembership
-            }
-        } else {
-            return null
-        }
+        const result = await blogsCollection.insertOne(blogsPost)
+        return blogsPost
 
     },
 
-    async findBlogsId(id: string): Promise<BlogViewType | null> {
+    async findBlogsId(id: string): Promise<BlogsType | null> {
         let blogsGet = await blogsCollection.findOne({id: id})
         if (blogsGet) {
-            return {
-                id: blogsGet._id.toString(),
-                name: blogsGet.name,
-                description: blogsGet.description,
-                websiteUrl: blogsGet.websiteUrl,
-                createdAt: blogsGet.createdAt,
-                isMembership: blogsGet.isMembership
-            }
+            return blogsGet
         } else {
             return null
         }

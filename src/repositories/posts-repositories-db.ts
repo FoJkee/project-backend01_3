@@ -1,35 +1,42 @@
-import {BlogsType, postsType} from "../types/types";
+
 import {postsCollection} from "./db";
+import {PostsType} from "../types/types";
 
 
-type PostViewType = postsType & { id: string }
+type PostViewType = PostsType & { id: string }
+
 
 const date = new Date()
 export const repositoryPosts = {
 
-    async findPosts(): Promise<postsType[]> {
-        return await postsCollection.find({}).toArray()
+    async findPosts(): Promise<PostViewType[]> {
+        const result = await postsCollection.find({}).toArray()
+        return result.map(el => ({
+            id: el._id.toString(), title: el.title, shortDescription: el.shortDescription, content: el.content,
+            blogId: el.blogId, blogName: el.blogName, createdAt: el.createdAt
+        }))
     },
 
     async createPosts(title: string, shortDescription: string,
-                      content: string, blogId: string, blogName: string):Promise<postsType> {
+                      content: string, blogId: string, blogName: string): Promise<PostsType> {
 
         const postsPost = {
+            id: (+date).toString(),
             title: title,
             shortDescription: shortDescription,
-            content:content,
-            blogId:blogId,
+            content: content,
+            blogId: blogId,
             blogName: blogName,
             createdAt: date.toISOString()
         }
-        await postsCollection.insertOne(postsPost)
+        const result = await postsCollection.insertOne(postsPost)
         return postsPost
 
     },
 
-    async findPostsId(id: string): Promise<postsType | null> {
+    async findPostsId(id: string): Promise<PostsType | null> {
 
-        let findGetId: postsType | null = await postsCollection.findOne({id: id})
+        let findGetId: PostsType | null = await postsCollection.findOne({id: id})
         if (findGetId) {
             return findGetId
         } else {
