@@ -35,6 +35,7 @@ routingBlogs.put('/:id', authorizeMiddleware, blogsMiddleware, errorsMessages,
     async (req: Request, res: Response) => {
         const blogsPut = await repositoryBlogs.updateBlogs(req.params.id, req.body.name,
             req.body.description, req.body.websiteUrl)
+
         if (blogsPut) {
             const blogsPutId = await repositoryBlogs.findBlogsId(req.params.id)
             res.status(204).send(blogsPutId)

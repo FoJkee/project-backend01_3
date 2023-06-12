@@ -63,9 +63,10 @@ export const repositoryPosts = {
 
         const result = await postsCollection
             .updateOne({_id: new ObjectId(id)}, {
-                title: title, shortDescription: shortDescription,
-                content: content,
-                blogId: blogId
+                "title": title,
+                "shortDescription": shortDescription,
+                "content": content,
+                "blogId": blogId
             })
         return result.matchedCount === 1
     },
