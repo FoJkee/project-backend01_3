@@ -20,6 +20,7 @@ export const repositoryPosts = {
                       content: string, blogId: string, blogName: string): Promise<PostsType> {
 
         const postsPost = {
+            id: (+date).toString(),
             title: title,
             shortDescription: shortDescription,
             content: content,
