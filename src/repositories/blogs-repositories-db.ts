@@ -9,7 +9,7 @@ const date = new Date()
 export const repositoryBlogs = {
 
     async findBlogs(): Promise<BlogViewType[]> {
-        const result =  await blogsCollection.find({}).toArray()
+        const result = await blogsCollection.find({}).toArray()
         return result.map(el => ({
             name: el.name, id: el._id.toString(),
             description: el.description, websiteUrl: el.websiteUrl,
@@ -17,7 +17,7 @@ export const repositoryBlogs = {
         }))
     },
 
-    async createBlogs(name: string, description: string, websiteUrl: string) {
+    async createBlogs(name: string, description: string, websiteUrl: string): Promise<BlogsType | null> {
         const blogsPost = {
             name: name,
             description: description,
@@ -25,14 +25,32 @@ export const repositoryBlogs = {
             createdAt: date.toISOString(),
             isMembership: false
         }
-        const result = await blogsCollection.insertOne(blogsPost)
-        return blogsPost
+        const result =  await blogsCollection.insertOne(blogsPost)
+        if(blogsPost){
+            return {
+                name: blogsPost.name,
+                description: blogsPost.description,
+                websiteUrl: blogsPost.websiteUrl,
+                createdAt: blogsPost.createdAt,
+                isMembership: blogsPost.isMembership
+            }
+        } else {
+            return null
+        }
+
     },
 
-    async findBlogsId(id: string): Promise<BlogsType | null> {
+    async findBlogsId(id: string): Promise<BlogViewType | null> {
         let blogsGet = await blogsCollection.findOne({id: id})
         if (blogsGet) {
-            return blogsGet
+            return {
+                id: blogsGet._id.toString(),
+                name: blogsGet.name,
+                description: blogsGet.description,
+                websiteUrl: blogsGet.websiteUrl,
+                createdAt: blogsGet.createdAt,
+                isMembership: blogsGet.isMembership
+            }
         } else {
             return null
         }
