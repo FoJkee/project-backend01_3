@@ -1,8 +1,6 @@
 import {postsType} from "../types/types";
 import {postsCollection} from "./db";
 
-
-
 const date = new Date()
 export const repositoryPosts = {
 
