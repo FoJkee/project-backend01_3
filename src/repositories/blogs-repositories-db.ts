@@ -29,10 +29,17 @@ export const repositoryBlogs = {
 
     },
 
-    async findBlogsId(id: string): Promise<BlogsType | null> {
+    async findBlogsId(id: string): Promise<BlogViewType | null> {
         let blogsGet = await blogsCollection.findOne({id: id})
         if (blogsGet) {
-            return blogsGet
+            return {
+                id: blogsGet._id.toString(),
+                name: blogsGet.name,
+                description: blogsGet.description,
+                websiteUrl: blogsGet.websiteUrl,
+                createdAt: blogsGet.createdAt,
+                isMembership: blogsGet.isMembership
+            }
         } else {
             return null
         }
