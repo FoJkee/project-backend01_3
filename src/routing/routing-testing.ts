@@ -8,7 +8,6 @@ export const testingRouter = Router()
 testingRouter.delete('/all-data', async (req: Request, res: Response) => {
     await repositoryBlogs.deleteBlogsAll()
     await repositoryPosts.deletePostsAll()
-    console.log('faasfaf')
     res.sendStatus(204)
 
 })

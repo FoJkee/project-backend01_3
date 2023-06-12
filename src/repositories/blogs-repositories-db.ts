@@ -18,7 +18,7 @@ export const repositoryBlogs = {
         }))
     },
 
-    async createBlogs(name: string, description: string, websiteUrl: string): Promise<string> {
+    async createBlogs(name: string, description: string, websiteUrl: string): Promise<BlogsType> {
         const blogsPost = {
             name: name,
             description: description,
@@ -27,7 +27,7 @@ export const repositoryBlogs = {
             isMembership: false
         }
         const result = await blogsCollection.insertOne(blogsPost)
-        return result.insertedId.toString()
+        return blogsPost
     },
 
     async findBlogsId(id: string): Promise<BlogViewType | null> {
