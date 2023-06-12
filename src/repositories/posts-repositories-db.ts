@@ -1,9 +1,6 @@
 import {postsCollection} from "./db";
-import {PostsType} from "../types/types";
-
-
-type PostViewType = PostsType & { id: string }
-
+import {PostsType, PostViewType} from "../types/types";
+import {ObjectId, WithId} from "mongodb";
 
 const date = new Date()
 export const repositoryPosts = {
@@ -17,9 +14,10 @@ export const repositoryPosts = {
     },
 
     async createPosts(title: string, shortDescription: string,
-                      content: string, blogId: string, blogName: string): Promise<PostsType> {
+                      content: string, blogId: string, blogName: string): Promise<PostViewType> {
 
         const postsPost = {
+            _id: new ObjectId(),
             title: title,
             shortDescription: shortDescription,
             content: content,
@@ -27,16 +25,34 @@ export const repositoryPosts = {
             blogName: blogName,
             createdAt: date.toISOString()
         }
+
         const result = await postsCollection.insertOne(postsPost)
-        return postsPost
+
+        return {
+            id: result.insertedId.toString(),
+            title: postsPost.title,
+            shortDescription: postsPost.shortDescription,
+            content: postsPost.content,
+            blogId: postsPost.blogId,
+            blogName: postsPost.blogName,
+            createdAt: postsPost.createdAt
+        }
 
     },
 
-    async findPostsId(id: string): Promise<PostsType | null> {
+    async findPostsId(id: string): Promise<PostViewType | null> {
 
-        let findGetId: PostsType | null = await postsCollection.findOne({id: id})
+        let findGetId: WithId<PostsType> | null = await postsCollection.findOne({_id: new ObjectId(id)})
         if (findGetId) {
-            return findGetId
+            return {
+                id: findGetId._id.toString(),
+                title: findGetId.title,
+                shortDescription: findGetId.shortDescription,
+                content: findGetId.content,
+                blogId: findGetId.blogId,
+                blogName: findGetId.blogName,
+                createdAt: findGetId.createdAt
+            }
         } else {
             return null
         }
@@ -46,7 +62,7 @@ export const repositoryPosts = {
                       content: string, blogId: string): Promise<boolean> {
 
         const result = await postsCollection
-            .updateOne({id: id}, {
+            .updateOne({_id: new ObjectId(id)}, {
                 title: title, shortDescription: shortDescription,
                 content: content,
                 blogId: blogId
@@ -55,7 +71,7 @@ export const repositoryPosts = {
     },
 
     async deletePosts(id: string): Promise<boolean | null> {
-        const result = await postsCollection.deleteOne({id: id})
+        const result = await postsCollection.deleteOne({_id: new ObjectId(id)})
         return result.deletedCount === 1
     },
 
