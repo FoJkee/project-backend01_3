@@ -18,7 +18,6 @@ export const repositoryBlogs = {
 
     async createBlogs(name: string, description: string, websiteUrl: string): Promise<BlogsType> {
         const blogsPost = {
-            id: (+date).toString(),
             name: name,
             description: description,
             websiteUrl: websiteUrl,
