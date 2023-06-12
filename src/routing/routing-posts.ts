@@ -23,13 +23,7 @@ routingPosts.post('/', authorizeMiddleware, postMiddleware, errorsMessages, asyn
 })
 
 
-
-
 routingPosts.get('/:id', async (req: Request, res: Response) => {
-    if(!req.params.id){
-        res.sendStatus(404)
-        return
-    }
     const postsGetId = await repositoryPosts.findPostsId(req.params.id)
 
     if (postsGetId) {
@@ -40,32 +34,27 @@ routingPosts.get('/:id', async (req: Request, res: Response) => {
 
 })
 routingPosts.put('/:id', authorizeMiddleware, postMiddleware, errorsMessages, async (req: Request, res: Response) => {
-    if(!req.params.id){
+    const isPostExist = await repositoryPosts.findPostsId(req.params.id)
+
+    if(!isPostExist){
         res.sendStatus(404)
         return
     }
+
     const putBlogs = await repositoryPosts.updatePosts(req.params.id, req.body.title,
         req.body.shortDescription, req.body.content, req.body.blogId)
-    if (putBlogs) {
-        const putBlogsId = await repositoryPosts.findPostsId(req.params.id)
-        res.status(204).send(putBlogsId)
-    } else {
-        res.sendStatus(404)
-    }
 
+    const putBlogsId = await repositoryPosts.findPostsId(req.params.id)
+    res.status(204).send(putBlogsId)
 })
 routingPosts.delete('/:id', authorizeMiddleware, postMiddleware, async (req: Request, res: Response) => {
+    const isPostExist = await repositoryPosts.findPostsId(req.params.id)
 
-    if(!req.params.id){
+    if(!isPostExist){
         res.sendStatus(404)
         return
     }
 
     const postDelete = await repositoryPosts.deletePosts(req.params.id)
-    if (!postDelete) {
-        res.sendStatus(404)
-    } else {
-        res.sendStatus(204)
-    }
-
+    res.sendStatus(404)
 })
