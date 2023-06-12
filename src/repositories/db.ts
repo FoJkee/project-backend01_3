@@ -1,4 +1,4 @@
-import {MongoClient} from "mongodb";
+import {MongoClient, WithId} from "mongodb";
 import {BlogsType, PostsType} from "../types/types";
 import dotenv from 'dotenv'
 
@@ -15,8 +15,8 @@ if (!mongoUri) {
 const client = new MongoClient(mongoUri)
 
 const db = client.db('social_network');
-export const postsCollection = db.collection<PostsType>('posts')
-export const blogsCollection = db.collection<BlogsType>('blogs')
+export const postsCollection = db.collection<WithId<PostsType>>('posts')
+export const blogsCollection = db.collection<WithId<BlogsType>>('blogs')
 
 
 export async function runDb() {

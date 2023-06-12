@@ -1,7 +1,6 @@
-import {BlogsType} from "../types/types";
+import {BlogsType, BlogViewType} from "../types/types";
 import {blogsCollection} from "./db";
-
-type BlogViewType = BlogsType & { id: string }
+import {ObjectId} from "mongodb";
 
 const date = new Date()
 
@@ -16,8 +15,9 @@ export const repositoryBlogs = {
         }))
     },
 
-    async createBlogs(name: string, description: string, websiteUrl: string): Promise<BlogsType> {
+    async createBlogs(name: string, description: string, websiteUrl: string): Promise<string> {
         const blogsPost = {
+            _id: new ObjectId(),
             name: name,
             description: description,
             websiteUrl: websiteUrl,
@@ -25,19 +25,22 @@ export const repositoryBlogs = {
             isMembership: false
         }
         const result = await blogsCollection.insertOne(blogsPost)
-        return blogsPost
+        return result.insertedId.toString()
 
     },
 
-    async findBlogsId(id: string): Promise<BlogsType | null> {
-        let blogsGet = await blogsCollection.findOne({id: id})
+    async findBlogsId(id: string): Promise<BlogViewType | null> {
+        let blogsGet = await blogsCollection.findOne({_id: new ObjectId(id)})
+        console.log('blogsGet', blogsGet)
         if (blogsGet) {
             return {
+                id: blogsGet._id.toString(),
                 name: blogsGet.name,
                 description: blogsGet.description,
                 websiteUrl: blogsGet.websiteUrl,
-                createdAt: blogsGet.createdAt,
-                isMembership: blogsGet.isMembership
+                createdAt: date.toISOString(),
+                isMembership: false
+
             }
         } else {
             return null
@@ -46,13 +49,13 @@ export const repositoryBlogs = {
 
     async updateBlogs(id: string, name: string, description: string, websiteUrl: string): Promise<boolean> {
         const result = await blogsCollection
-            .updateOne({id: id}, {$set: {name: name, description: description, websiteUrl: websiteUrl}})
+            .updateOne({_id: new ObjectId(id)}, {$set: {name: name, description: description, websiteUrl: websiteUrl}})
 
         return result.matchedCount === 1
 
     },
-    async deleteBlogs(id: string): Promise<BlogsType | boolean | null> {
-        const result = await blogsCollection.deleteOne({id: id})
+    async deleteBlogs(id: string): Promise<boolean | null> {
+        const result = await blogsCollection.deleteOne({_id: new ObjectId(id)})
         return result.deletedCount === 1
     },
 

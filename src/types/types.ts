@@ -1,3 +1,5 @@
+import {ObjectId} from "mongodb";
+
 export type BlogsType = {
     name: string,
     description: string,
@@ -6,8 +8,20 @@ export type BlogsType = {
     isMembership: boolean
 }
 
+export type BlogViewType = BlogsType & { id: string }
+
 
 export type PostsType = {
+    title: string,
+    shortDescription: string,
+    content: string,
+    blogId: string,
+    blogName: string,
+    createdAt: string,
+}
+
+export type PostsTypeDbType = {
+    _id: ObjectId
     title: string,
     shortDescription: string,
     content: string,
