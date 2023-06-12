@@ -8,8 +8,8 @@ const date = new Date()
 
 export const repositoryBlogs = {
 
-    async findBlogs(): Promise<BlogViewType[]> {
-        const result = await blogsCollection.find({}).toArray()
+    async findBlogs(): Promise<BlogsType[]> {
+        const result =  await blogsCollection.find({}).toArray()
         return result.map(el => ({
             name: el.name, id: el._id.toString(),
             description: el.description, websiteUrl: el.websiteUrl,
@@ -17,7 +17,7 @@ export const repositoryBlogs = {
         }))
     },
 
-    async createBlogs(name: string, description: string, websiteUrl: string): Promise<string> {
+    async createBlogs(name: string, description: string, websiteUrl: string) {
         const blogsPost = {
             name: name,
             description: description,
@@ -26,20 +26,13 @@ export const repositoryBlogs = {
             isMembership: false
         }
         const result = await blogsCollection.insertOne(blogsPost)
-        return result.insertedId.toString()
+        return blogsPost
     },
 
-    async findBlogsId(id: string): Promise<BlogViewType | null> {
+    async findBlogsId(id: string): Promise<BlogsType | null> {
         let blogsGet = await blogsCollection.findOne({id: id})
         if (blogsGet) {
-            return {
-                id: blogsGet._id.toString(),
-                name: blogsGet.name,
-                description: blogsGet.description,
-                websiteUrl: blogsGet.websiteUrl,
-                createdAt: blogsGet.createdAt,
-                isMembership: blogsGet.isMembership
-            }
+            return blogsGet
         } else {
             return null
         }
