@@ -3,7 +3,6 @@ import {authorizeMiddleware} from "../middleware/authorize";
 import {errorsMessages} from "../middleware/errorsmessages";
 import {blogsMiddleware} from "../middleware/blogs-middleware";
 import {repositoryBlogs} from "../repositories/blogs-repositories-db";
-import {BlogViewType} from "../types/types";
 
 
 export const routingBlogs = Router()
