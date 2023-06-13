@@ -40,6 +40,8 @@ export const repositoryPosts = {
 
     },
 
+
+
     async findPostsId(id: string): Promise<PostViewType | null> {
 
         let findGetId: WithId<PostsType> | null = await postsCollection.findOne({_id: new ObjectId(id)})
